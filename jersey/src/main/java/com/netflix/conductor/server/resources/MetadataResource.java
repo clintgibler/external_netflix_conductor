@@ -53,6 +53,7 @@ public class MetadataResource {
 	@POST
 	@Path("/workflow")
 	@ApiOperation("Create a new workflow definition")
+	@Secured("user")
 	public void create(WorkflowDef workflowDef) {
 		metadataService.registerWorkflowDef(workflowDef);
 	}
@@ -60,6 +61,7 @@ public class MetadataResource {
 	@PUT
 	@Path("/workflow")
 	@ApiOperation("Create or update workflow definition")
+	@Secured("metadata")
 	public void update(List<WorkflowDef> workflowDefs) {
 		metadataService.updateWorkflowDef(workflowDefs);
 	}
@@ -67,6 +69,7 @@ public class MetadataResource {
 	@GET
 	@ApiOperation("Retrieves workflow definition along with blueprint")
 	@Path("/workflow/{name}")
+	@Secured("user")
 	public WorkflowDef get(@PathParam("name") String name,
 						   @QueryParam("version") Integer version) {
         return metadataService.getWorkflowDef(name, version);
@@ -75,6 +78,7 @@ public class MetadataResource {
 	@GET
 	@ApiOperation("Retrieves all workflow definition along with blueprint")
 	@Path("/workflow")
+	@Secured("user")
 	public List<WorkflowDef> getAll() {
 		return metadataService.getWorkflowDefs();
 	}
@@ -82,6 +86,7 @@ public class MetadataResource {
 	@DELETE
 	@Path("/workflow/{name}/{version}")
 	@ApiOperation("Removes workflow definition. It does not remove workflows associated with the definition.")
+	@Secured("user")
 	public void unregisterWorkflowDef(@PathParam("name") String name,
                                       @PathParam("version") Integer version) {
 	    metadataService.unregisterWorkflowDef(name, version);
@@ -90,6 +95,7 @@ public class MetadataResource {
 	@POST
 	@Path("/taskdefs")
 	@ApiOperation("Create new task definition(s)")
+	@Secured("user")
 	public void registerTaskDef(List<TaskDef> taskDefs) {
 		metadataService.registerTaskDef(taskDefs);
 	}
@@ -97,6 +103,7 @@ public class MetadataResource {
 	@PUT
 	@Path("/taskdefs")
 	@ApiOperation("Update an existing task")
+	@Secured("user")
 	public void registerTaskDef(TaskDef taskDef) {
 		metadataService.updateTaskDef(taskDef);
 	}
@@ -105,6 +112,7 @@ public class MetadataResource {
 	@Path("/taskdefs")
 	@ApiOperation("Gets all task definition")
 	@Consumes(MediaType.WILDCARD)
+	@Secured("user")
 	public List<TaskDef> getTaskDefs() {
 		return metadataService.getTaskDefs();
 	}
@@ -113,6 +121,7 @@ public class MetadataResource {
 	@Path("/taskdefs/{tasktype}")
 	@ApiOperation("Gets the task definition")
 	@Consumes(MediaType.WILDCARD)
+	@Secured("user")
 	public TaskDef getTaskDef(@PathParam("tasktype") String taskType) {
         return metadataService.getTaskDef(taskType);
 	}
@@ -120,6 +129,7 @@ public class MetadataResource {
 	@DELETE
 	@Path("/taskdefs/{tasktype}")
 	@ApiOperation("Remove a task definition")
+	@Secured("user")
 	public void unregisterTaskDef(@PathParam("tasktype") String taskType){
 		metadataService.unregisterTaskDef(taskType);
 	}

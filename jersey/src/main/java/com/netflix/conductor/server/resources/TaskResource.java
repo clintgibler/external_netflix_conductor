@@ -63,6 +63,7 @@ public class TaskResource {
 	@Path("/poll/{tasktype}")
 	@ApiOperation("Poll for a task of a certain type")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public Task poll(@PathParam("tasktype") String taskType,
 					 @QueryParam("workerid") String workerId,
 					 @QueryParam("domain") String domain) {
@@ -73,6 +74,7 @@ public class TaskResource {
 	@Path("/poll/batch/{tasktype}")
 	@ApiOperation("batch Poll for a task of a certain type")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public List<Task> batchPoll(@PathParam("tasktype") String taskType,
 								@QueryParam("workerid") String workerId,
 								@QueryParam("domain") String domain,
@@ -85,6 +87,7 @@ public class TaskResource {
 	@Path("/in_progress/{tasktype}")
 	@ApiOperation("Get in progress tasks. The results are paginated.")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public List<Task> getTasks(@PathParam("tasktype") String taskType,
 							   @QueryParam("startKey") String startKey,
 							   @QueryParam("count") @DefaultValue("100") Integer count) {
@@ -95,6 +98,7 @@ public class TaskResource {
 	@Path("/in_progress/{workflowId}/{taskRefName}")
 	@ApiOperation("Get in progress task for a given workflow id.")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public Task getPendingTaskForWorkflow(@PathParam("workflowId") String workflowId,
 										  @PathParam("taskRefName") String taskReferenceName) {
 		return taskService.getPendingTaskForWorkflow(workflowId, taskReferenceName);
@@ -103,6 +107,7 @@ public class TaskResource {
 	@POST
 	@ApiOperation("Update a task")
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
+	@Secured("user")
 	public String updateTask(TaskResult taskResult) {
 		return taskService.updateTask(taskResult);
 	}
@@ -111,6 +116,7 @@ public class TaskResource {
 	@Path("/{taskId}/ack")
 	@ApiOperation("Ack Task is received")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public String ack(@PathParam("taskId") String taskId,
 					  @QueryParam("workerid") String workerId) {
 		return taskService.ackTaskReceived(taskId, workerId);
@@ -126,6 +132,7 @@ public class TaskResource {
 	@GET
 	@Path("/{taskId}/log")
 	@ApiOperation("Get Task Execution Logs")
+	@Secured("user")
 	public List<TaskExecLog> getTaskLogs(@PathParam("taskId") String taskId) {
 		return taskService.getTaskLogs(taskId);
 	}
@@ -134,6 +141,7 @@ public class TaskResource {
 	@Path("/{taskId}")
 	@ApiOperation("Get task by Id")
 	@Consumes(MediaType.WILDCARD)
+	@Secured("user")
 	public Task getTask(@PathParam("taskId") String taskId) {
 		return taskService.getTask(taskId);
 	}
@@ -142,6 +150,7 @@ public class TaskResource {
 	@Path("/queue/{taskType}/{taskId}")
 	@ApiOperation("Remove Task from a Task type queue")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public void removeTaskFromQueue(@PathParam("taskType") String taskType,
 									@PathParam("taskId") String taskId) {
 		taskService.removeTaskFromQueue(taskType, taskId);
@@ -151,6 +160,7 @@ public class TaskResource {
 	@Path("/queue/sizes")
 	@ApiOperation("Get Task type queue sizes")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public Map<String, Integer> size(@QueryParam("taskType") List<String> taskTypes) {
 		return taskService.getTaskQueueSizes(taskTypes);
 	}
@@ -159,6 +169,7 @@ public class TaskResource {
 	@Path("/queue/all/verbose")
 	@ApiOperation("Get the details about each queue")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public Map<String, Map<String, Map<String, Long>>> allVerbose() {
 		return taskService.allVerbose();
 	}
@@ -167,6 +178,7 @@ public class TaskResource {
 	@Path("/queue/all")
 	@ApiOperation("Get the details about each queue")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public Map<String, Long> all() {
 		return taskService.getAllQueueDetails();
 	}
@@ -175,6 +187,7 @@ public class TaskResource {
 	@Path("/queue/polldata")
 	@ApiOperation("Get the last poll data for a given task type")
 	@Consumes({MediaType.WILDCARD})
+	@Secured("user")
 	public List<PollData> getPollData(@QueryParam("taskType") String taskType) {
 		return taskService.getPollData(taskType);
 	}
@@ -183,6 +196,7 @@ public class TaskResource {
 	@Path("/queue/polldata/all")
 	@ApiOperation("Get the last poll data for all task types")
 	@Consumes(MediaType.WILDCARD)
+	@Secured("user")
 	public List<PollData> getAllPollData() {
 		return taskService.getAllPollData();
 	}
@@ -190,6 +204,7 @@ public class TaskResource {
 	@POST
 	@Path("/queue/requeue")
 	@ApiOperation("Requeue pending tasks for all the running workflows")
+	@Secured("user")
 	public String requeue() {
 		return taskService.requeue();
 	}
@@ -199,6 +214,7 @@ public class TaskResource {
 	@ApiOperation("Requeue pending tasks")
 	@Consumes(MediaType.WILDCARD)
 	@Produces({ MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON })
+	@Secured("user")
 	public String requeuePendingTask(@PathParam("taskType") String taskType) {
 		return taskService.requeuePendingTask(taskType);
 	}
@@ -210,6 +226,7 @@ public class TaskResource {
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/search")
+	@Secured("user")
 	public SearchResult<TaskSummary> search(@QueryParam("start") @DefaultValue("0") int start,
 											@QueryParam("size") @DefaultValue("100") int size,
 											@QueryParam("sort") String sort,
@@ -222,6 +239,7 @@ public class TaskResource {
 	@ApiOperation("Get the external uri where the task payload is to be stored")
 	@Consumes(MediaType.WILDCARD)
 	@Path("/externalstoragelocation")
+	@Secured("user")
 	public ExternalStorageLocation getExternalStorageLocation(@QueryParam("path") String path, @QueryParam("operation") String operation, @QueryParam("payloadType") String payloadType) {
 		return taskService.getExternalStorageLocation(path, operation, payloadType);
 	}

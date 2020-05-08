@@ -56,6 +56,7 @@ public class QueueAdminResource {
 	@ApiOperation("Get the queue length")
 	@GET
 	@Path("/size")
+	@Secured("admin")
 	@Consumes(MediaType.WILDCARD)
 	public Map<String, Long> size() {
 		return qm.size();
@@ -64,6 +65,7 @@ public class QueueAdminResource {
 	@ApiOperation("Get Queue Names")
 	@GET
 	@Path("/")
+	@Secured("admin")
 	@Consumes(MediaType.WILDCARD)
 	public Map<Status, String> names() {
 		return qm.queues();
@@ -72,6 +74,7 @@ public class QueueAdminResource {
 	@POST
 	@Path("/update/{workflowId}/{taskRefName}/{status}")
 	@ApiOperation("Publish a message in queue to mark a wait task as completed.")
+	@Secured("admin")
 	public void update(@PathParam("workflowId") String workflowId, @PathParam("taskRefName") String taskRefName, @PathParam("status") Status status, Map<String, Object> output) throws Exception {
 		qm.updateByTaskRefName(workflowId, taskRefName, output, status);
 	}

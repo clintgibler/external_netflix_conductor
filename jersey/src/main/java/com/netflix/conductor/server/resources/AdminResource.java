@@ -57,6 +57,7 @@ public class AdminResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/config")
+	@Secured("user")
 	public Map<String, Object> getAllConfig() {
         return adminService.getAllConfig();
 	}
@@ -65,6 +66,7 @@ public class AdminResource {
 	@Path("/task/{tasktype}")
 	@ApiOperation("Get the list of pending tasks for a given task type")
 	@Consumes({ MediaType.WILDCARD })
+	@Secured("admin")
 	public List<Task> view(@PathParam("tasktype") String taskType,
                            @DefaultValue("0") @QueryParam("start") Integer start,
                            @DefaultValue("100") @QueryParam("count") Integer count) {
@@ -76,6 +78,7 @@ public class AdminResource {
 	@ApiOperation("Queue up all the running workflows for sweep")
 	@Consumes({ MediaType.WILDCARD })
 	@Produces({ MediaType.TEXT_PLAIN })
+	@Secured("admin")
 	public String requeueSweep(@PathParam("workflowId") String workflowId) {
         return adminService.requeueSweep(workflowId);
 	}

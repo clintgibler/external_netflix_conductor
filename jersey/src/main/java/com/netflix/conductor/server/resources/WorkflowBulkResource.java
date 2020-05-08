@@ -62,6 +62,7 @@ public class WorkflowBulkResource {
     @PUT
     @Path("/pause")
     @ApiOperation("Pause the list of workflows")
+    @Secured("user")
     public BulkResponse pauseWorkflow(List<String> workflowIds) {
         return workflowBulkService.pauseWorkflow(workflowIds);
     }
@@ -74,6 +75,7 @@ public class WorkflowBulkResource {
     @PUT
     @Path("/resume")
     @ApiOperation("Resume the list of workflows")
+    @Secured("user")
     public BulkResponse resumeWorkflow(List<String> workflowIds)  {
         return workflowBulkService.resumeWorkflow(workflowIds);
     }
@@ -88,6 +90,7 @@ public class WorkflowBulkResource {
     @POST
     @Path("/restart")
     @ApiOperation("Restart the list of completed workflow")
+    @Secured("user")
     public BulkResponse restart(List<String> workflowIds, @QueryParam("useLatestDefinitions") @DefaultValue("false") boolean useLatestDefinitions) {
         return workflowBulkService.restart(workflowIds, useLatestDefinitions);
     }
@@ -100,6 +103,7 @@ public class WorkflowBulkResource {
     @POST
     @Path("/retry")
     @ApiOperation("Retry the last failed task for each workflow from the list")
+    @Secured("user")
     public BulkResponse retry(List<String> workflowIds) {
        return  workflowBulkService.retry(workflowIds);
     }
@@ -113,6 +117,7 @@ public class WorkflowBulkResource {
     @DELETE
     @Path("/terminate")
     @ApiOperation("Terminate workflows execution")
+    @Secured("user")
     public BulkResponse terminate(List<String> workflowIds, @QueryParam("reason") String reason) {
         return workflowBulkService.terminate(workflowIds, reason);
     }

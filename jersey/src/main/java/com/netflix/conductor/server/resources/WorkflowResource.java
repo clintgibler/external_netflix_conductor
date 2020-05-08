@@ -66,6 +66,7 @@ public class WorkflowResource {
     @POST
     @Produces({MediaType.TEXT_PLAIN})
     @ApiOperation("Start a new workflow with StartWorkflowRequest, which allows task to be executed in a domain")
+    @Secured("user")
     public String startWorkflow(StartWorkflowRequest request) {
         return workflowService.startWorkflow(request);
     }
@@ -74,6 +75,7 @@ public class WorkflowResource {
     @Path("/{name}")
     @Produces({MediaType.TEXT_PLAIN})
     @ApiOperation("Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking")
+    @Secured("user")
     public String startWorkflow(@PathParam("name") String name,
                                 @QueryParam("version") Integer version,
                                 @QueryParam("correlationId") String correlationId,
@@ -86,6 +88,7 @@ public class WorkflowResource {
     @Path("/{name}/correlated/{correlationId}")
     @ApiOperation("Lists workflows for the given correlation id")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public List<Workflow> getWorkflows(@PathParam("name") String name,
                                        @PathParam("correlationId") String correlationId,
                                        @QueryParam("includeClosed") @DefaultValue("false") boolean includeClosed,
@@ -97,6 +100,7 @@ public class WorkflowResource {
     @Path("/{name}/correlated")
     @ApiOperation("Lists workflows for the given correlation id list")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Secured("user")
     public Map<String, List<Workflow>> getWorkflows(@PathParam("name") String name,
                                                     @QueryParam("includeClosed") @DefaultValue("false") boolean includeClosed,
                                                     @QueryParam("includeTasks") @DefaultValue("false") boolean includeTasks,
@@ -108,6 +112,7 @@ public class WorkflowResource {
     @Path("/{workflowId}")
     @ApiOperation("Gets the workflow by workflow id")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public Workflow getExecutionStatus(@PathParam("workflowId") String workflowId,
                                        @QueryParam("includeTasks") @DefaultValue("true") boolean includeTasks) {
         return workflowService.getExecutionStatus(workflowId, includeTasks);
@@ -117,6 +122,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/remove")
     @ApiOperation("Removes the workflow from the system")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void delete(@PathParam("workflowId") String workflowId,
                        @QueryParam("archiveWorkflow") @DefaultValue("true") boolean archiveWorkflow) {
         workflowService.deleteWorkflow(workflowId, archiveWorkflow);
@@ -126,6 +132,7 @@ public class WorkflowResource {
     @Path("/running/{name}")
     @ApiOperation("Retrieve all the running workflows")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public List<String> getRunningWorkflow(@PathParam("name") String workflowName,
                                            @QueryParam("version") @DefaultValue("1") Integer version,
                                            @QueryParam("startTime") Long startTime,
@@ -137,6 +144,7 @@ public class WorkflowResource {
     @Path("/decide/{workflowId}")
     @ApiOperation("Starts the decision task for a workflow")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void decide(@PathParam("workflowId") String workflowId) {
         workflowService.decideWorkflow(workflowId);
     }
@@ -145,6 +153,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/pause")
     @ApiOperation("Pauses the workflow")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void pauseWorkflow(@PathParam("workflowId") String workflowId) {
         workflowService.pauseWorkflow(workflowId);
     }
@@ -153,6 +162,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/resume")
     @ApiOperation("Resumes the workflow")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void resumeWorkflow(@PathParam("workflowId") String workflowId) {
         workflowService.resumeWorkflow(workflowId);
     }
@@ -161,6 +171,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/skiptask/{taskReferenceName}")
     @ApiOperation("Skips a given task from a current running workflow")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Secured("user")
     public void skipTaskFromWorkflow(@PathParam("workflowId") String workflowId,
                                      @PathParam("taskReferenceName") String taskReferenceName,
                                      SkipTaskRequest skipTaskRequest) {
@@ -172,6 +183,7 @@ public class WorkflowResource {
     @ApiOperation("Reruns the workflow from a specific task")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
+    @Secured("user")
     public String rerun(@PathParam("workflowId") String workflowId,
                         RerunWorkflowRequest request) {
         return workflowService.rerunWorkflow(workflowId, request);
@@ -181,6 +193,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/restart")
     @ApiOperation("Restarts a completed workflow")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void restart(@PathParam("workflowId") String workflowId, @QueryParam("useLatestDefinitions") @DefaultValue("false") boolean useLatestDefinitions) {
         workflowService.restartWorkflow(workflowId, useLatestDefinitions);
     }
@@ -197,6 +210,7 @@ public class WorkflowResource {
     @Path("/{workflowId}/resetcallbacks")
     @ApiOperation("Resets callback times of all in_progress tasks to 0")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void resetWorkflow(@PathParam("workflowId") String workflowId) {
         workflowService.resetWorkflow(workflowId);
     }
@@ -205,6 +219,7 @@ public class WorkflowResource {
     @Path("/{workflowId}")
     @ApiOperation("Terminate workflow execution")
     @Consumes(MediaType.WILDCARD)
+    @Secured("user")
     public void terminate(@PathParam("workflowId") String workflowId,
                           @QueryParam("reason") String reason) {
         workflowService.terminateWorkflow(workflowId, reason);
@@ -217,6 +232,7 @@ public class WorkflowResource {
     @Consumes(MediaType.WILDCARD)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/search")
+    @Secured("user")
     public SearchResult<WorkflowSummary> search(@QueryParam("start") @DefaultValue("0") int start,
                                                 @QueryParam("size") @DefaultValue("100") int size,
                                                 @QueryParam("sort") String sort,
@@ -232,6 +248,7 @@ public class WorkflowResource {
     @Consumes(MediaType.WILDCARD)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/search-by-tasks")
+    @Secured("user")
     public SearchResult<WorkflowSummary> searchWorkflowsByTasks(@QueryParam("start") @DefaultValue("0") int start,
                                                                 @QueryParam("size") @DefaultValue("100") int size,
                                                                 @QueryParam("sort") String sort,
@@ -244,6 +261,7 @@ public class WorkflowResource {
     @ApiOperation("Get the uri and path of the external storage where the workflow payload is to be stored")
     @Consumes(MediaType.WILDCARD)
     @Path("/externalstoragelocation")
+    @Secured("user")
     public ExternalStorageLocation getExternalStorageLocation(@QueryParam("path") String path, @QueryParam("operation") String operation, @QueryParam("payloadType") String payloadType) {
         return workflowService.getExternalStorageLocation(path, operation, payloadType);
     }

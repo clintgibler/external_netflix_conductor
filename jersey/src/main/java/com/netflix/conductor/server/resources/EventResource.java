@@ -60,11 +60,13 @@ public class EventResource {
 
 	@POST
 	@ApiOperation("Add a new event handler.")
+	@Secured("user")
 	public void addEventHandler(EventHandler eventHandler) {
         eventService.addEventHandler(eventHandler);
 	}
 
 	@PUT
+	@Secured("user")
 	@ApiOperation("Update an existing event handler.")
 	public void updateEventHandler(EventHandler eventHandler) {
         eventService.updateEventHandler(eventHandler);
@@ -72,6 +74,7 @@ public class EventResource {
 
 	@DELETE
 	@Path("/{name}")
+	@Secured("user")
 	@ApiOperation("Remove an event handler")
 	public void removeEventHandlerStatus(@PathParam("name") String name) {
         eventService.removeEventHandlerStatus(name);
@@ -79,6 +82,7 @@ public class EventResource {
 
 	@GET
 	@ApiOperation("Get all the event handlers")
+	@Secured("user")
 	public List<EventHandler> getEventHandlers() {
 		return eventService.getEventHandlers();
 	}
@@ -86,6 +90,7 @@ public class EventResource {
 	@GET
 	@Path("/{event}")
 	@ApiOperation("Get event handlers for a given event")
+	@Secured("user")
 	public List<EventHandler> getEventHandlersForEvent(@PathParam("event") String event,
                                                        @QueryParam("activeOnly") @DefaultValue("true") boolean activeOnly) {
         return eventService.getEventHandlersForEvent(event, activeOnly);
@@ -94,6 +99,7 @@ public class EventResource {
 	@GET
 	@Path("/queues")
 	@ApiOperation("Get registered queues")
+	@Secured("user")
 	public Map<String, ?> getEventQueues(@QueryParam("verbose") @DefaultValue("false") boolean verbose) {
 		return eventService.getEventQueues(verbose);
 	}
@@ -101,6 +107,7 @@ public class EventResource {
 	@GET
 	@Path("/queues/providers")
 	@ApiOperation("Get registered queue providers")
+	@Secured("user")
 	public List<String> getEventQueueProviders() {
 		return eventService.getEventQueueProviders();
 	}
